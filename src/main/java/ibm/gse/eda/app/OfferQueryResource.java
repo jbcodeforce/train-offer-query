@@ -12,6 +12,7 @@ import org.jboss.logging.annotations.Param;
 
 import ibm.gse.eda.app.dto.TrainSearchRequest;
 import ibm.gse.eda.app.dto.TrainSearchResponse;
+import ibm.gse.eda.domain.OfferService;
 import ibm.gse.eda.domain.SearchService;
 import ibm.gse.eda.domain.TrainOffer;
 import io.smallrye.mutiny.Uni;
@@ -22,19 +23,22 @@ public class OfferQueryResource {
     @Inject
     public SearchService searchService;
 
+    @Inject
+    public OfferService offerService;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public TrainSearchResponse searchRouters(TrainSearchRequest searchRequest){
+    public Uni<TrainSearchResponse> searchRouters(TrainSearchRequest searchRequest){
         return searchService.searchService(searchRequest);
         
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/offer/{offerId}")
+    @Path("/offers/{offerId}")
     public Uni<TrainOffer> getOffer(@Param String offerId){
-        return searchService.getOffer(offerId);
+        return offerService.getOffer(offerId);
         
     }
 
